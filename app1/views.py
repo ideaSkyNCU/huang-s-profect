@@ -41,11 +41,11 @@ def login(request):
             user_e.p_k = hashlib.md5(os.urandom(32).hexdigest())
             user_e.save(update_field=['p_k'])#change p_k only
             return HttpResponseRedirect('/monitor')
-    #    else:
-    #        st="login didn't sucess"
-    #        return HttpResponse(st)
+        else:
+            st="login didn't sucess"
+            return HttpResponse(st)
     
-    #return render(request, 'login.html')
+    return render(request, 'login.html')
 
 '''
 def logout(request):
