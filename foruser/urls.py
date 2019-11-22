@@ -17,12 +17,12 @@ from django.contrib import admin
 from app1.views import monitor, home, login#logout, projects_details, post_detail
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
-
+    #url(r'^admin/$', include(admin.site.urls)),
     url(r'^monitor/$',monitor),
     url(r'^$',home),
     url(r'^login/$',login),
+]
 '''
     url(r'^projects/(?P<pk>\d+)/get/$',projects_details,name='projects_details'),#project i 
-    url(r'^projects/get/$', post_detail, name='post_detail'),#username+id'''
-]
+    url(r'^projects/get/$', post_detail, name='post_detail'),#username+id
+'''

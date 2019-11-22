@@ -18,7 +18,7 @@ class AeroboxData(models.Model):
     rh=models.IntegerField(blank=True)
     co2=models.IntegerField(blank=True)
     time=models.DateTimeField(auto_now_add=True)
-    aerobox=models.OneToOneField(Aerobox)
+    aerobox=models.OneToOneField(Aerobox,on_delete=models.CASCADE)
 
 class UserExtension(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)

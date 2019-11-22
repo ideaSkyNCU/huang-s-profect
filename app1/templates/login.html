@@ -1,0 +1,15 @@
+<form action="." method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <div>
+            <label for="deviceModalMac" class="col-form-label">Username:</label>
+            <input type="text" class="form-control" id="deviceModalMac" name="username" maxlength="100" required/>
+            <label for="deviceModalDeviceName" class="col-form-label">Password:</label>
+            <input type="text" class="form-control device-modal-item" id="deviceModalDeviceName" name="password" maxlength="100" required/>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <input type="submit" class="btn btn-primary" value="Submit">
+    </div>
+</form>

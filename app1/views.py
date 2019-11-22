@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import ProjectData
+from django.contrib import auth
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.http import HttpResponse
@@ -39,9 +40,12 @@ def login(request):
             user_e=UserExtension.objects.get(user=user)
             user_e.p_k = hashlib.md5(os.urandom(32).hexdigest())
             user_e.save(update_field=['p_k'])#change p_k only
-        return HttpResponseRedirect('/monitor')
-    st="login didn't sucess"
-    return HttpResponse(st)
+            return HttpResponseRedirect('/monitor')
+    #    else:
+    #        st="login didn't sucess"
+    #        return HttpResponse(st)
+    
+    #return render(request, 'login.html')
 
 '''
 def logout(request):
