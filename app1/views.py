@@ -29,7 +29,6 @@ def monitor(request):
 
 
 def login(request):
-    print("login suse.")
     if request.method == "POST":
         print(request.POST)
         username=request.POST.get('username')
@@ -42,8 +41,8 @@ def login(request):
             user_e.save(update_field=['p_k'])#change p_k only
             return HttpResponseRedirect('/monitor')
         else:
-            st="login didn't sucess"
-            return HttpResponse(st)
+            #st="login didn't sucess"
+            return HttpResponse("login didn't sucess!!")
     
     return render(request, 'login.html')
 
@@ -62,18 +61,18 @@ def home(request):
 ##        'post_list':post_list,
 ##    })
 
-'''
-@login_required
+
+#@login_required
 def post_detail(request):
     username = request.GET.get('username')
     user = User.object.get(username=username)
     u=USERExtension.objects.get(user=user)
     np={
-        'name'=u.user.username,
-        'p_k'=u.p_k,
+        'name':u.user.username,
+        'p_k':u.p_k,
     }
     return JsonResponse(np)
-
+'''
 @login_required
 def projects_details(request): #need p_k
     username = request.GET.get('username')
