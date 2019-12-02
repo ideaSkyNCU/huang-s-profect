@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
-from .models import ProjectData
+from .models import ProjectData, UserExtension
 from django.contrib import auth
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import os
@@ -36,9 +37,9 @@ def login(request):
         user=auth.authenticate(username=username,password=password)##########
         if user and user.is_active:
             auth.login(request, user)
-            user_e=UserExtension.objects.get(user=user)
-            user_e.p_k = hashlib.md5(os.urandom(32).hexdigest())
-            user_e.save(update_field=['p_k'])#change p_k only
+            user_e, created = UserExtension.objects.get_or_create(user=user)
+            user_e.personal_key = hashlib.md5(os.urandom(32)).hexdigest()
+            user_e.save(update_fields=['personal_key'])#change p_k only
             return HttpResponseRedirect('/monitor')
         else:
             #st="login didn't sucess"
@@ -57,21 +58,22 @@ def home(request):
     test=[11,22,":)"]
     return HttpResponse(test)
 #    post_list = Post.objects.all()
-##    return render(request, 'home.html',{
-##        'post_list':post_list,
-##    })
+#    return render(request, 'home.html',{
+#        'post_list':post_list,
+#    })
 
 
-#@login_required
+@login_required
 def post_detail(request):
-    username = request.GET.get('username')
-    user = User.object.get(username=username)
-    u=USERExtension.objects.get(user=user)
+    username = request.user
+    user = User.objects.get(username=username)
+    u=UserExtension.objects.get(user=user)
     np={
         'name':u.user.username,
-        'p_k':u.p_k,
+        'p_k':u.personal_key,
     }
     return JsonResponse(np)
+
 '''
 @login_required
 def projects_details(request): #need p_k
