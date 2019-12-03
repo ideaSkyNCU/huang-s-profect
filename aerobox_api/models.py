@@ -24,5 +24,5 @@ class UserExtension(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     ##ForeignKey==onetoone
     name=models.CharField(max_length=100,default=1)
-    p_k=models.IntegerField(blank=True,default=hashlib.md5(os.urandom(32).hexdigest()),unique=True)
+    p_k=models.CharField(max_length=33,blank=True,default=hashlib.md5(os.urandom(32)).hexdigest(),unique=True)
 
