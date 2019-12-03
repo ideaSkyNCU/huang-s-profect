@@ -67,16 +67,19 @@ def home(request):
 @login_required
 def post_detail(request):
     username = request.GET.get('username')
-    user = User.objects.get(username=username)
+    print("username:::::::::::::::::::",username)
+    user = User.objects.get(username=username)#error!!!
+    #print("user",user)
     u=USERExtension.objects.get(user=user)
     np={
-        'name':u.user.username,
-        'p_k':u.p_k,
+        '1':2,
+        #'name':u.user.username,
+        #'p_k':u.p_k,
     }
     return JsonResponse(np)
-'''
+
 @login_required
-def projects_details(request): #need p_k
+def projects_details(request): #need p_k to try if user is a ok_user(act.and.logined)
     username = request.GET.get('username')
     user = User.object.get(username=username)
     u=USERExtension.objects.get(user=user)
@@ -88,12 +91,10 @@ def projects_details(request): #need p_k
                 'name': ProjectData.name,
                 'start_time': ProjectData.start_time,
                 'end_time': ProjectData.end_time,
-                'user':  ProjectData.user,  #????????
+                'user':  ProjectData.username,  #????????
                 'aerobox_data':  ProjectData.aerobox_data,#????????
             }
-#==========>for "/projects/<id>/Get/"
-#==========>return [project i]
         return JsonResponse(ok_data)
     return HttpResponse("you are not a valid user!!!")
-'''
+
 
