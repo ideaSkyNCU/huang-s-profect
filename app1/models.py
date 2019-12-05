@@ -1,25 +1,15 @@
 from django.db import models
-from aerobox_api.models import AeroboxData, UserExtension
+from aerobox_api.models import ProjectData
+from django.contrib.auth.models import User
+import hashlib
+import os
 
+def create_key():
+    return hashlib.md5(os.urandom(32)).hexdigest()
 
-class ProjectData(models.Model):
-    name = models.CharField(max_length=100,default=1)
-    start_time = models.DateTimeField(auto_now_add=True)
-    end_time = models.DateTimeField(auto_now=True)
-
-    user = models.ManyToManyField(UserExtension)
-    aerobox_data = models.ManyToManyField(AeroboxData)
-
-'''
-    def get_allinf(self):
-        return {
-	    "name":self.aerobox_data.aerobox.name,
-	    "lon":self.aerobox_data.aerobox.lon,
-	    "lat":self.aerobox_data.aerobox.lat,
-	    "start_time":self.start_time,
-            "end_time":self.end_time,
-
-	    "host":list(h_id in self.host.all()),
-            "aerobox_data":list(a_id in self.aerobox_data.all()),
-	}
-'''
+class UserExtension(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)##ForeignKey==onetoone
+    #user = models.ManyToManyField(UserExtension)
+    u_name=models.CharField(max_length=100,default=1)
+    personal_key=models.CharField(max_length=33,blank=True,default=create_key,unique=True)
+    projectdata = models.ManyToManyField(ProjectData)

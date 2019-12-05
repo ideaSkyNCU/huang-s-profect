@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import ProjectData, UserExtension
+from aerobox_api.models import ProjectData
+from .models import UserExtension
 from django.contrib import auth
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
@@ -13,15 +14,12 @@ import hashlib
 def monitor(request):
     print(request.GET)
     print(request.POST)
-    #for pro in post_detail:
-        #return
 
     is_ajax = False
     if request.is_ajax():
         is_ajax = True
     test = {'GET':'GET',
 	    'array':[1, 2, 3, 4],
-	    #'a':request.GET['a'],
 	    'b[]':request.GET.getlist('b[ssssssssss]'),
 	    'brray':[99,88,77,66,55],
 	    'is_ajax':is_ajax,
@@ -34,15 +32,15 @@ def login(request):
         print(request.POST)
         username=request.POST.get('username')
         password=request.POST.get('password')
-        user=auth.authenticate(username=username,password=password)##########
+        user=auth.authenticate(username=username,password=password)
         if user and user.is_active:
             auth.login(request, user)
-            user_e, created = UserExtension.objects.get_or_create(user=user)
+            user_e, created = UserExtension.objects.get_or_create(user=user) #also: user_e, _ #error
+            print("333333333333")
             user_e.personal_key = hashlib.md5(os.urandom(32)).hexdigest()
             user_e.save(update_fields=['personal_key'])#change p_k only
             return HttpResponseRedirect('/monitor')
         else:
-            #st="login didn't sucess"
             return HttpResponse("login didn't sucess!!")
     
     return render(request, 'login.html')
@@ -88,8 +86,6 @@ def projects_details(request): #need p_k
         
     }
 #    post = Post.objects.get(pk=pk)
-#==========>for "/projects/<id>/Get/"
-#==========>return [project i]
     return JsonResponse(ok_data)
 
 '''
