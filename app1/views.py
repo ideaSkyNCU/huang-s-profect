@@ -36,7 +36,6 @@ def login(request):
         if user and user.is_active:
             auth.login(request, user)
             user_e, created = UserExtension.objects.get_or_create(user=user) #also: user_e, _ #error
-            print("333333333333")
             user_e.personal_key = hashlib.md5(os.urandom(32)).hexdigest()
             user_e.save(update_fields=['personal_key'])#change p_k only
             return HttpResponseRedirect('/monitor')
@@ -48,7 +47,7 @@ def login(request):
 '''
 def logout(request):
     auth.logout(request)
-    return HttpResponseRedirect('/monitor')
+    return HttpResponseRedirect('/monitor')                                         50#
 '''
 
 def home(request):
@@ -72,21 +71,37 @@ def post_detail(request):
     }
     return JsonResponse(np)
 
-'''
+
 @login_required
-def projects_details(request): #need p_k
-    username = request.GET.get('username')
-    user = User.object.get(username=username)
-    u=USERExtension.objects.get(user=user)
+def projects_details(request):
+    compare_username = request.user
+    user = User.objects.get(username=compare_username)
+    u=UserExtension.objects.get(user=user)
+    compare_pk=request.POST.get('p_k')
+    all_list={}
+    pd_list={}
+    ad_list={}
+    p=0
+    a=0
+    if(User.objects.filter(pk=compare_pk,username=compare_username)[0].exists):
+    #if(User.objects.filter(pk=compare_pk,username=compare_username)[0].exists):
+        for pd in u.projectdata: ##pd=lot of projectdata
+            for ad in pd.aerobox_data: ##ad=lot of aerobox_data
+                ad_list={
+                         'pm':ad.pm,
+                         'temp':ad.temp,
+                         'rh':ad.rh,
+                         'co2':ad.co2,
+                         'time':ad.time,
+                         'aerobox_name':ad.aerobox.aerobox_name,
+                         'lon':ad.aerobox.lon,
+                         'lat':ad.aerobox.lat,
+                        }
+                pd_list[str(a)]=ad_list
+                a+=1
+            all_list[str(p)]=pd_list
+            p+=1
 
-    if(request.method=="GET"):
-        u=USERExtension.objects.get(personal_key=personal_key)
-        p=u.projects.all()
-    ok_data={
-        
-    }
-#    post = Post.objects.get(pk=pk)
-    return JsonResponse(ok_data)
+    return JsonResponse(all_list)
 
-'''
 

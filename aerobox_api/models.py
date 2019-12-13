@@ -1,12 +1,4 @@
 from django.db import models
-'''from django.contrib.auth.models import User
-import hashlib
-import os
-
-#User = get_user_model()
-
-def create_key():
-    return hashlib.md5(os.urandom(32)).hexdigest()'''
 
 class Aerobox(models.Model):
     aerobox_name=models.CharField(max_length=100,default=1)
