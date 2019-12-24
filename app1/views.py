@@ -73,20 +73,21 @@ def post_detail(request):
 
 
 @login_required
-def projects_details(request):
+def projects_details(request,pk):
     compare_username = request.user
     user = User.objects.get(username=compare_username)
     u=UserExtension.objects.get(user=user)
-    compare_pk=request.POST.get('p_k')
+    print(pk,compare_username,"/",user,"/",u,"//",UserExtension.objects.filter(personal_key=pk,user__username=compare_username).first())
     all_list={}
     pd_list={}
     ad_list={}
     p=0
     a=0
-    if(User.objects.filter(pk=compare_pk,username=compare_username)[0].exists):
-    #if(User.objects.filter(pk=compare_pk,username=compare_username)[0].exists):
-        for pd in u.projectdata: ##pd=lot of projectdata
-            for ad in pd.aerobox_data: ##ad=lot of aerobox_data
+    if(UserExtension.objects.filter(personal_key=pk,user__username=compare_username).first()):#exists()
+        for pd in u.projectdata.all():  ##pd=lot of projectdata
+            print(pd)
+            for ad in pd.aerobox_data.all(): ##ad=lot of aerobox_data
+                print(ad)
                 ad_list={
                          'pm':ad.pm,
                          'temp':ad.temp,
