@@ -14,9 +14,8 @@ class AeroboxData(models.Model):
     aerobox=models.OneToOneField(Aerobox,on_delete=models.CASCADE)
 
 class ProjectData(models.Model):
-    pj_name = models.CharField(max_length=100,default=1)#pj name
+    pj_name = models.CharField(max_length=100,default=1)
     start_time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField(auto_now=True)
-
     aerobox_data = models.ManyToManyField(AeroboxData)
 

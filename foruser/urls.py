@@ -10,8 +10,4 @@ urlpatterns = [
     url(r'^login/$',login),
     url(r'^projects/get/$', post_detail, name='post_detail'),
     path('projects/<pk>/get/',projects_details,name='projects_details'),
-    #url(r'^projects/aaa/get/$',projects_details,name='projects_details'),
 ]
-'''
-    url(r'^projects/(?P<pk>\d+)/get/$',projects_details,name='projects_details'),#project i 
-'''
