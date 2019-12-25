@@ -18,7 +18,7 @@ def monitor(request):
     is_ajax = False
     #if request.is_ajax():
     #    is_ajax = True
-    test = {'test':'It is test!'
+    test = {'test':'It is test!',
             'GET':'GET',
 	    'array':[1, 2, 3, 4],
 	    'b[]':request.GET.getlist('b[ssssssssss]'),
